@@ -41,13 +41,13 @@ numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 
 # Este preprossing esta basado en lo visto y hecho en el TP1, y es nuestro primero approach de preprossing
 
-def preprod_tp1(df_datos, df_predict):
+def generate_initial_dataset(df_datos, df_predict):
     df = pd.merge(df_datos, df_predict, how='inner', left_on='id_usuario', right_on='id_usuario')
-    df = prepod_tp1_un_df(df)
+    df = generate_holdout_dataset(df)
     return df
 
 
-def prepod_tp1_un_df(df):
+def generate_holdout_dataset(df):
     df = df.drop(['id_ticket', 'fila', 'nombre'], axis=1)
     df['cant_acompañantes'] = df['parientes'] + df['amigos']
     df = df.reindex(columns=columnsTitles)
@@ -88,7 +88,7 @@ def normalizar_atributos_numericos(df):
 
 df_decision.head()
 
-df = preprod_tp1(df_data, df_decision)
+df = generate_initial_dataset(df_data, df_decision)
 df = replace_nulls_edad(df, 'media')
 df.head()
 
