@@ -29,28 +29,32 @@ import category_encoders as ce
 
 sns.set()
 
-df_data = pd.read_csv('https://drive.google.com/uc?export=download&id=1i-KJ2lSvM7OQH0Yd59bX01VoZcq8Sglq')
-df_decision = pd.read_csv('https://drive.google.com/uc?export=download&id=1km-AEIMnWVGqMtK-W28n59hqS5Kufhd0')
+
 # -
 
-columnsTitles=["tipo_de_sala","id_usuario","genero","edad","amigos",
-               "parientes","precio_ticket",'nombre_sede','cant_acompañantes','volveria']
+column_titles = ["tipo_de_sala","id_usuario","genero","edad","amigos",
+                 "parientes","precio_ticket",'nombre_sede','cant_acompañantes','volveria']
 
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 
 
 # Este preprossing esta basado en lo visto y hecho en el TP1, y es nuestro primero approach de preprossing
 
-def generate_initial_dataset(df_datos, df_predict):
+def generate_initial_dataset(data_path, decision_path):
+    df_datos = pd.read_csv(data_path)
+    df_predict = pd.read_csv(decision_path)
     df = pd.merge(df_datos, df_predict, how='inner', left_on='id_usuario', right_on='id_usuario')
-    df = generate_holdout_dataset(df)
+    df = df.drop(['id_ticket', 'fila', 'nombre'], axis=1)
+    df['cant_acompañantes'] = df['parientes'] + df['amigos']
+    df = df.reindex(columns = column_titles)
     return df
 
 
-def generate_holdout_dataset(df):
+def generate_holdout_dataset(df_path):
+    df = pd.read_csv(df_path)
     df = df.drop(['id_ticket', 'fila', 'nombre'], axis=1)
     df['cant_acompañantes'] = df['parientes'] + df['amigos']
-    df = df.reindex(columns=columnsTitles)
+    df = df.reindex(columns = column_titles)
     return df
 
 
@@ -86,25 +90,7 @@ def normalizar_atributos_numericos(df):
     return df
 
 
-df_decision.head()
 
-df = generate_initial_dataset(df_data, df_decision)
-df = replace_nulls_edad(df, 'media')
-df.head()
 
-df = normalizar_atributos_numericos(df)
-df.head()
-
-columnas_numericas = df.select_dtypes(include=numerics).columns.to_list()
-df[columnas_numericas].max()
-
-df.tipo_de_sala.value_counts()
-
-df.tipo_de_sala.value_counts()
-
-df = encodear_atributos_categoricos(df)
-df.head()
-
-df.shape
 
 
