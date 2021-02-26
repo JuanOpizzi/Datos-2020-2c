@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.impute import KNNImputer
 
 column_titles = ["tipo_de_sala","id_usuario","genero","edad","amigos",
                  "parientes","precio_ticket",'nombre_sede','cant_acompañantes','volveria']
@@ -46,3 +47,10 @@ def normalizar_atributos_numericos(df):
     minimo = df[columnas_numericas].min()
     df[columnas_numericas] = (df[columnas_numericas] - df[columnas_numericas].min()) / (df[columnas_numericas].max() - df[columnas_numericas].min())
     return df
+
+def usar_knn_para_missing_values(df):
+    imputer = KNNImputer()
+    df_sin_missing = pd.DataFrame(
+        imputer.fit_transform(df), columns=df.columns
+    )
+    return df_sin_missing
