@@ -14,6 +14,11 @@ KNN_PARAMS = {'n_neighbors': np.arange(3, 10),
               'metric': ['euclidean', 'manhattan', 'chebyshev', 'minkowski']
              }
 
+ADA_PARAMS = {'n_estimators': np.arange(25, 100),
+              'learning_rate': [0.1, 0.2, 0.4, 0.7],
+              'algorithm': ['SAMME', 'SAMME.R'],
+             }
+
 def split_dataset_X_y (df, df_columns):
     X = df.loc[:, df_columns]
     y = df.loc[:, 'volveria']
@@ -29,7 +34,16 @@ def fit_model_grid_search (X, y, model, params):
     print(f"Best params {rgscv.best_params_}\n")
     return rgscv.best_params_, X_train, X_test, y_train, y_test
 
-    
+
+def fit_model_random_grid_search (X, y, model, params):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=117)
+    rgscv = RandomizedSearchCV(model, params, n_iter=60, scoring='roc_auc', cv=5,
+                               return_train_score=True).fit(X_train, y_train)
+    print(f"Best score: {rgscv.best_score_}")
+    print(f"Best params {rgscv.best_params_}\n")
+    return rgscv.best_params_, X_train, X_test, y_train, y_test
+
+
 def apply_stratified_k_fold (X, y, model):
     kf = StratifiedKFold(n_splits=5)
     test_rocs = []
