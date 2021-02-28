@@ -54,3 +54,9 @@ def usar_knn_para_missing_values(df):
         imputer.fit_transform(df), columns=df.columns
     )
     return df_sin_missing
+
+def eliminar_feature(df, feature):
+    if feature not in df.columns:
+        return
+    df = df.drop([feature], axis=1)
+    return df
