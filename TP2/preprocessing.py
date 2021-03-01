@@ -38,7 +38,8 @@ def replace_nulls_column(df, columna, metrica):
 # con dummy_na pasamos nan a categoria y con drop_first eliminamos una columna, que a fines
 # practicos es informacion redundante
 def encodear_atributos_categoricos(df):
-    encodeado = pd.get_dummies(df, columns=['tipo_de_sala', 'genero', 'nombre_sede'], dummy_na=True, drop_first=True)
+    cols=['tipo_de_sala', 'genero', 'nombre_sede']
+    encodeado = pd.get_dummies(df, columns=cols, dummy_na=True, drop_first=True)
     return encodeado
 
 def normalizar_atributos_numericos(df):
