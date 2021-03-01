@@ -16,7 +16,7 @@ def split_dataset_X_y (df, df_columns):
 
 
 def fit_model_grid_search (X, y, model, params):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=117)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=117, stratify=y)
     rgscv = GridSearchCV(model, params, scoring='roc_auc', cv=5, return_train_score=True).fit(X_train, y_train)
     print(f"Best score: {rgscv.best_score_}")
     print(f"Best params {rgscv.best_params_}\n")
