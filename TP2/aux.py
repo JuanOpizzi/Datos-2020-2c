@@ -7,18 +7,6 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 
 
-KNN_PARAMS = {'n_neighbors': np.arange(3, 10),
-              'weights': ['uniform','distance'],
-              'algorithm': ['auto', 'ball_tree', 'kd_tree'],
-              'leaf_size': np.arange(15, 40),
-              'metric': ['euclidean', 'manhattan', 'chebyshev', 'minkowski']
-             }
-
-ADA_PARAMS = {'n_estimators': np.arange(25, 100),
-              'learning_rate': [0.1, 0.2, 0.4, 0.7],
-              'algorithm': ['SAMME', 'SAMME.R'],
-             }
-
 def split_dataset_X_y (df, df_columns):
     X = df.loc[:, df_columns]
     y = df.loc[:, 'volveria']
