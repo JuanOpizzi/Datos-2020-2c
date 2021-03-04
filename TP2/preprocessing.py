@@ -55,7 +55,7 @@ def usar_knn_para_missing_values(df):
     )
     return df_sin_missing
 
-def eliminar_feature(df, feature_list):
+def eliminar_features(df, feature_list):
     for feature in feature_list:
         if feature not in df.columns:
             return
