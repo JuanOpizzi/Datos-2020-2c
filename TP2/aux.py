@@ -24,7 +24,7 @@ def fit_model_grid_search (X, y, model, params):
 
 
 def fit_model_random_grid_search (X, y, model, params):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=117)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=117, stratify=y)
     rgscv = RandomizedSearchCV(model, params, n_iter=60, scoring='roc_auc', cv=5,
                                return_train_score=True).fit(X_train, y_train)
     print(f"Best score: {rgscv.best_score_}")
