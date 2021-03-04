@@ -37,9 +37,8 @@ def replace_nulls_column(df, columna, metrica):
 
 # con dummy_na pasamos nan a categoria y con drop_first eliminamos una columna, que a fines
 # practicos es informacion redundante
-def encodear_atributos_categoricos(df):
-    cols=['tipo_de_sala', 'genero', 'nombre_sede']
-    encodeado = pd.get_dummies(df, columns=cols, dummy_na=True, drop_first=True)
+def encodear_atributos_categoricos(df, columns):
+    encodeado = pd.get_dummies(df, columns=columns, dummy_na=True, drop_first=True)
     return encodeado
 
 def normalizar_atributos_numericos(df):
@@ -56,8 +55,10 @@ def usar_knn_para_missing_values(df):
     )
     return df_sin_missing
 
-def eliminar_feature(df, feature):
-    if feature not in df.columns:
-        return
-    df = df.drop([feature], axis=1)
+def eliminar_feature(df, feature_list):
+    for feature in feature_list:
+        if feature not in df.columns:
+            return
+        df = df.drop([feature], axis=1)
     return df
+
