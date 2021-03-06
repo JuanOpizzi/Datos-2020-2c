@@ -27,7 +27,9 @@ def replace_nulls_column(df, columna, metrica):
     else:
         s = df[columna]
         if metrica == 'moda':
-            df = df.replace({columna: np.nan}, s.mode())
+            moda = s.mode()
+            s.fillna(moda[0], inplace=True)
+#             df = df.replace({columna: np.nan}, moda)
         elif metrica == 'mediana':
             df = df.replace({columna: np.nan}, s.median())
         elif metrica == 'media':
